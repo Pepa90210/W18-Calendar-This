@@ -5,10 +5,20 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Cool App</title>
 </head>
 
 <body>
+  <form method="post" action="/">
+    {{ form.hidden_tag() }}
+    <p>Name {{ form.name(placeholder='Name') }}</p>
+    <p>Start {{ form.start_date() }} {{ form.start_time() }}</p>
+    <p>End {{ form.end_date() }} {{ form.end_time() }}</p>
+    <p>Description {{ form.description(placeholder='Description') }}</p>
+    <p>Private? {{ form.private() }}</p>
+    <p>{{ form.submit() }}</p>
+
+  </form>
   <table>
     <thead>
       <tr>
@@ -19,9 +29,11 @@
     </thead>
     <tbody>
       {% for appt in appts %}
-      <td>{{ appt[0] }}</td>
-      <td>{{ appt[1] }}</td>
-      <td>{{ appt[2] }}</td>
+      <tr>
+        <td>{{ appt[0] }}</td>
+        <td>{{ appt[1] }}</td>
+        <td>{{ appt[2] }}</td>
+      </tr>
       {% endfor %}
     </tbody>
   </table>
