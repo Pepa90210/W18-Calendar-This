@@ -9,7 +9,11 @@
 </head>
 
 <body>
-  <form method="post" action="/">
+  <h1>Welcome to Our Appointments App!</h1>
+  <nav>
+    <a href="/">Go to today's appointments</a>
+  </nav>
+  <form method="post" action="">
     {{ form.hidden_tag() }}
     <p>Name {{ form.name(placeholder='Name') }}</p>
     <p>Start {{ form.start_date() }} {{ form.start_time() }}</p>
@@ -25,7 +29,6 @@
     <p>Description {{ form.description(placeholder='Description') }}</p>
     <p>Private? {{ form.private() }}</p>
     <p>{{ form.submit() }}</p>
-
   </form>
   <table>
     <thead>

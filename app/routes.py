@@ -32,12 +32,24 @@ def daily(year, month, day):
                     'description': form.description.data,
                     'private': form.private.data
                   })
-      return redirect('')
+      return redirect('/')
 
-  
+  day = datetime(year, month, day)
+  next_day = day + timedelta(days=1)
+
+
   with sqlite3.connect(DB_FILE) as conn:
     curs = conn.cursor()
-    curs.execute("SELECT id, name, start_datetime, end_datetime FROM appointments ORDER BY start_datetime;")
+    curs.execute("""
+                  SELECT id, name, start_datetime, end_datetime
+                  FROM appointments
+                  WHERE start_datetime BETWEEN :day AND :next_day
+                  ORDER BY start_datetime;
+                """,
+                {
+                  'day': day,
+                  'next_day': next_day
+                })
     rows = curs.fetchall()
     # print(rows)
 

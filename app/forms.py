@@ -11,7 +11,7 @@ class AppointmentForm(FlaskForm):
   end_date = DateField('End Date', validators=[DataRequired()])
   end_time = TimeField('End Time', validators=[DataRequired()])
   description = TextAreaField('Description', validators=[DataRequired()])
-  private = BooleanField('Private', validators=[DataRequired()])
+  private = BooleanField('Private')
   submit = SubmitField('Create an appointment')
 
   def validate_end_date(form, field):
