@@ -1,7 +1,7 @@
-from flask import Blueprint, render_template, redirect
+from flask import Blueprint, render_template, redirect, url_for
 import os
 import sqlite3
-from datetime import datetime
+from datetime import datetime, timedelta
 from .forms import AppointmentForm
 
 
@@ -10,8 +10,14 @@ bp = Blueprint('main', __name__, url_prefix='/')
 
 DB_FILE = os.environ.get("DB_FILE")
 
-@bp.route("/", methods=['GET', 'POST'])
+@bp.route("/")
 def main():
+  current_date = datetime.now()
+  return redirect(url_for(".daily", year=current_date.year, month=current_date.month, day=current_date.day))
+
+
+@bp.route('/<int:year>/<int:month>/<int:day>', methods=['GET', 'POST'])
+def daily(year, month, day):
   form = AppointmentForm()
   if form.validate_on_submit():
     with sqlite3.connect(DB_FILE) as conn:
@@ -26,9 +32,9 @@ def main():
                     'description': form.description.data,
                     'private': form.private.data
                   })
-      return redirect('/')
+      return redirect('')
 
-
+  
   with sqlite3.connect(DB_FILE) as conn:
     curs = conn.cursor()
     curs.execute("SELECT id, name, start_datetime, end_datetime FROM appointments ORDER BY start_datetime;")
@@ -40,6 +46,6 @@ def main():
   for row in rows:
     appts.append((row[1], datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').strftime("%H:%M"), datetime.strptime(row[3], '%Y-%m-%d %H:%M:%S').strftime("%H:%M")))
 
-  print(appts)
+  # print(appts)
 
   return render_template('main.html', appts=appts, rows=rows, form=form)

@@ -13,7 +13,15 @@
     {{ form.hidden_tag() }}
     <p>Name {{ form.name(placeholder='Name') }}</p>
     <p>Start {{ form.start_date() }} {{ form.start_time() }}</p>
-    <p>End {{ form.end_date() }} {{ form.end_time() }}</p>
+    <p>End {{ form.end_date() }} {{ form.end_time() }}
+      {% if form.end_date.errors %}
+      <ul class="errors" style="color: red;">
+        {% for error in form.end_date.errors %}
+        <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    </p>
     <p>Description {{ form.description(placeholder='Description') }}</p>
     <p>Private? {{ form.private() }}</p>
     <p>{{ form.submit() }}</p>
